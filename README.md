@@ -1,12 +1,39 @@
 # AlarmManager
 
 # 유휴상태에서 알람 울리는지 확인 방법
+
+- 잠자기모드
+
+앱을 실행시킨 다음 활성 상태로 그냥 둡니다.
+
+다음 명령어를 실행하여 강제로 시스템을 유휴 모드로 지정합니다.
 ```
-adb shell dumpsys battery unplug
+$ adb shell dumpsys deviceidle force-idle
+```  
+준비가 되면 다음 명령어를 실행하여 유휴 모드를 종료합니다.
 ```
+$ adb shell dumpsys deviceidle unforce
+```   
+다음 명령어를 실행하여 기기를 다시 활성화합니다.
 ```
-adb shell dumpsys deviceidle step
-```
+$ adb shell dumpsys battery reset
+```    
+
+- 앱 대기모드
+
+앱을 실행시킨 다음 활성 상태로 그냥 둡니다.
+
+다음 명령어를 실행하여 앱에서 강제로 앱 대기 모드를 시작합니다.
+```   
+$ adb shell dumpsys battery unplug
+    $ adb shell am set-inactive <packageName> true
+    ```   
+다음 명령어를 사용하여 앱이 활성화되는 것을 시뮬레이션합니다.
+```   
+$ adb shell am set-inactive <packageName> false
+    $ adb shell am get-inactive <packageName>
+```   
+ref : https://developer.android.com/training/monitoring-device-state/doze-standby?hl=ko#testing_doze_and_app_standby
 
 # adb setting
 
@@ -90,7 +117,7 @@ AlarmClockInfo로 표현되는 시간에 알람을 예약한다.
 setAndAllowWhileIdle() 또는 setExactAndAllowWhileIdle()
 ```
 
-- setAlarmClock()으로 설정된 알람은 계속 정상적으로 실행됨. 시스템에서 이 알림이 싱행되기 직전에 잠자기 모드를 종료함
+- setAlarmClock()으로 설정된 알람은 계속 정상적으로 실행됨. 시스템에서 이 알림이 행되기 직전에 잠자기 모드를 종료함
 
 - 일반적인 알람은 set, setRepeating을 사용할 것. 배터리 효율은 OS의 배치 알고리즘에 의해 최적화됨
 
